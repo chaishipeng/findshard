@@ -14,7 +14,7 @@ public abstract class AbstractShardInstance implements ShardInstance {
 
     protected ShardCallback callback;
 
-    public void registerShardCallback(ShardCallback callback) {
+    public void setShardCallback(ShardCallback callback) {
         this.callback = callback;
     }
 }

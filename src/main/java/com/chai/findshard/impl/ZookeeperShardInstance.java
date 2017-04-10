@@ -60,7 +60,9 @@ public class ZookeeperShardInstance extends AbstractShardInstance {
                 String data = new String(nodeCache.getCurrentData().getData());
                 String[] datas = StringUtils.splitStr(data, ",");
                 lock.lock();
-                callback.change(datas);
+                if (callback != null) {
+                    callback.change(datas);
+                }
                 shards = datas;
                 lock.unlock();
             }
@@ -68,7 +70,7 @@ public class ZookeeperShardInstance extends AbstractShardInstance {
         try {
             nodeCache.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

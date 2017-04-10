@@ -9,7 +9,7 @@ public interface ShardInstance {
 
     String[] getShards();
 
-    void registerShardCallback(ShardCallback callback);
+    void setShardCallback(ShardCallback callback);
 
     void start();
 
