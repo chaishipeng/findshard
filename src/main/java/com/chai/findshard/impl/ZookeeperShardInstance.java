@@ -9,6 +9,8 @@ import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by chaishipeng on 2017/4/10.
  */
@@ -24,7 +26,10 @@ public class ZookeeperShardInstance extends AbstractShardInstance {
 
     private String realPath;
 
+    private ReentrantLock reentrantLock;
+
     public void start() {
+        reentrantLock = new ReentrantLock();
         initZkClient();
     }
 
@@ -48,18 +53,34 @@ public class ZookeeperShardInstance extends AbstractShardInstance {
     }
 
     private void registerNodeCache(){
+        final ReentrantLock lock = this.reentrantLock;
         final NodeCache nodeCache = new NodeCache(curatorFramework, realPath, false);
         nodeCache.getListenable().addListener(new NodeCacheListener() {
             public void nodeChanged() throws Exception {
                 String data = new String(nodeCache.getCurrentData().getData());
                 String[] datas = StringUtils.splitStr(data, ",");
+                lock.lock();
+                callback.change(datas);
                 shards = datas;
+                lock.unlock();
             }
         });
         try {
             nodeCache.start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+
+    public String[] getShards() {
+        final ReentrantLock lock = this.reentrantLock;
+        lock.lock();
+        try {
+            return shards;
+        } finally {
+            lock.unlock();
         }
     }
 

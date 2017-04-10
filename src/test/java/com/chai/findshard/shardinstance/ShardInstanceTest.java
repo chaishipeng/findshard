@@ -1,5 +1,6 @@
 package com.chai.findshard.shardinstance;
 
+import com.chai.findshard.api.ShardCallback;
 import com.chai.findshard.impl.ZookeeperShardInstance;
 
 /**
@@ -13,22 +14,18 @@ public class ShardInstanceTest {
         zookeeperShardInstance.setZkAddr("127.0.0.1:2181");
         zookeeperShardInstance.setZkTimeout(5000);
         zookeeperShardInstance.setZkInstancePath("/findshard/test/shardInstance");
-        zookeeperShardInstance.start();
-
-        while(true){
-            String[] shards = zookeeperShardInstance.getShards();
-            if (shards != null) {
-                for (String shard : shards) {
-                    System.out.print(shard + " ");
+        zookeeperShardInstance.registerShardCallback(new ShardCallback() {
+            public void change(String[] data) {
+                for (String str : data) {
+                    System.out.print(str + " ");
                 }
                 System.out.println();
             }
-            try {
-                Thread.currentThread().sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        });
+        zookeeperShardInstance.start();
+
+        for (;;);
+
 
     }
 
