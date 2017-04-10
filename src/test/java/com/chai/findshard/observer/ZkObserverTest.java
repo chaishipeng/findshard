@@ -12,7 +12,7 @@ public class ZkObserverTest {
         zookeeperObserver.setZkAddr("127.0.0.1:2181");
         zookeeperObserver.setZkLockPath("/findshard/test/lock");
         zookeeperObserver.setZkTimeout(5000);
-        zookeeperObserver.setShardCount(10);
+        zookeeperObserver.setShards("a,b,c,d,e,f,g,h,i,j,k");
         zookeeperObserver.setZkInstancePath("/findshard/test/shardInstance");
         zookeeperObserver.start();
 

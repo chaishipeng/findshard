@@ -33,7 +33,7 @@ public class ZookeeperObserver implements Observer {
 
     private String zkInstancePath;
 
-    private int shardCount;
+    private String shards;
 
     private String[] sumShard;
 
@@ -172,11 +172,7 @@ public class ZookeeperObserver implements Observer {
         this.zkInstancePath = zkInstancePath;
     }
 
-    public void setShardCount(int shardCount) {
-        this.shardCount = shardCount;
-        this.sumShard = new String[shardCount];
-        for (int index = 0 ; index <shardCount ; index++){
-            sumShard[index] = index + "";
-        }
+    public void setShards(String shards) {
+        sumShard = shards.split(",");
     }
 }
