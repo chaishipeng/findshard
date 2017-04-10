@@ -14,7 +14,7 @@ public class ShardInstanceTest {
         zookeeperShardInstance.setZkAddr("127.0.0.1:2181");
         zookeeperShardInstance.setZkTimeout(5000);
         zookeeperShardInstance.setZkInstancePath("/findshard/test/shardInstance");
-        zookeeperShardInstance.registerShardCallback(new ShardCallback() {
+        zookeeperShardInstance.setShardCallback(new ShardCallback() {
             public void change(String[] data) {
                 for (String str : data) {
                     System.out.print(str + " ");
