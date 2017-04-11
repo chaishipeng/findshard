@@ -7,6 +7,7 @@
     <groupId>com.chai.findshard</groupId>
     <artifactId>findshard</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
